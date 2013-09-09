@@ -6,12 +6,10 @@ class OauthNonce
 
   field :nonce,     :type => String
   field :timestamp, :type => Integer
-
-  index [
-    [:nonce, Mongo::ASCENDING],
-    [:timestamp, Mongo::ASCENDING]
-  ], :unique => true
-
+  
+  index({nonce:1}, {unique:true})
+  index({nonce:1, timestamp:1}, {unique:true})
+  
   validates_presence_of :nonce, :timestamp
   validates_uniqueness_of :nonce, :scope => :timestamp
 
@@ -22,3 +20,4 @@ class OauthNonce
     oauth_nonce
   end
 end
+

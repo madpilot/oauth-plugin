@@ -12,13 +12,13 @@ class ClientApplication
   field :secret,        :type => String
   field :secret,        :type => String
 
-  index :key, :unique => true
+  index({key:1}, {unique:true})
 
-  referenced_in :user
-  references_many :tokens, :class_name => 'OauthToken'
-  references_many :access_tokens
-  references_many :oauth2_verifiers
-  references_many :oauth_tokens
+  belongs_to :user
+  has_many :tokens, :class_name => 'OauthToken'
+  has_many :access_tokens
+  has_many :oauth2_verifiers
+  has_many :oauth_tokens
 
   validates_presence_of :name, :url, :key, :secret
   validates_uniqueness_of :key
@@ -69,3 +69,4 @@ class ClientApplication
     self.secret = OAuth::Helper.generate_key(40)[0,40]
   end
 end
+

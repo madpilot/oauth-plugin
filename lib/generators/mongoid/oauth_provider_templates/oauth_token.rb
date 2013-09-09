@@ -11,10 +11,10 @@ class OauthToken
   field :invalidated_at, :type => Time
   field :expires_at, :type => Time
 
-  index :token, :unique => true
-
-  referenced_in :user
-  referenced_in :client_application
+  index({token:1}, {unique:true})
+ 
+  belongs_to :user
+  belongs_to :client_application
 
   validates_uniqueness_of :token
   validates_presence_of :client_application, :token
@@ -42,3 +42,4 @@ class OauthToken
     self.secret = OAuth::Helper.generate_key(40)[0,40]
   end
 end
+

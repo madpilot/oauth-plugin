@@ -12,7 +12,7 @@ class OauthClientsController < ApplicationController
   end
 
   def create
-    @client_application = current_user.client_applications.build(params[:client_application])
+    @client_application = current_user.client_applications.build(oath_client_params)
     if @client_application.save
       flash[:notice] = "Registered the information successfully"
       redirect_to :action => "show", :id => @client_application.id
@@ -28,7 +28,7 @@ class OauthClientsController < ApplicationController
   end
 
   def update
-    if @client_application.update_attributes(params[:client_application])
+    if @client_application.update_attributes(oath_client_params)
       flash[:notice] = "Updated the client information successfully"
       redirect_to :action => "show", :id => @client_application.id
     else
@@ -43,6 +43,9 @@ class OauthClientsController < ApplicationController
   end
 
   private
+  def oath_client_params
+       params.require(:client_application).permit(:name,:url,:callback_url,:support_url,:commit)
+  end
   def get_client_application
     unless @client_application = current_user.client_applications.find(params[:id])
       flash.now[:error] = "Wrong application id"

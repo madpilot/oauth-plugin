@@ -3,7 +3,7 @@ require 'oauth/signature/hmac/sha1'
 require 'oauth/request_proxy/rack_request'
 require 'oauth/server'
 require 'oauth/controllers/application_controller_methods'
-if Rails.version =~ /^3\./
+if Rails.version =~ /^3\./ || Rails.version =~ /^4\./
   require 'oauth/request_proxy/rack_request'
 else
   require 'oauth/request_proxy/action_controller_request'

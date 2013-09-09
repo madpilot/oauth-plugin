@@ -10,14 +10,14 @@ class ConsumerToken
   field :token, :type => String
   field :secret, :type => String
 
-  index :token
+  index({token:1}, {unique:true})
 
   # Add the following to your user model:
   #
   #   embeds_many :consumer_tokens
   #   index "consumer_tokens.token"
   #
-  embedded_in :user, :inverse_of => :consumer_tokens
+  belongs_to :user, :inverse_of => :consumer_tokens
 
   def self.find_or_create_from_access_token(user,access_token)
     secret = access_token.respond_to?(:secret) ? access_token.secret : nil

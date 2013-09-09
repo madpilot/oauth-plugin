@@ -12,11 +12,15 @@ class OauthClientsController < ApplicationController
   end
 
   def create
-    @client_application = current_user.client_applications.build(oath_client_params)
-    if @client_application.save
-      flash[:notice] = "Registered the information successfully"
-      redirect_to :action => "show", :id => @client_application.id
+    @client_application = ClientApplication.create(oath_client_params)
+    @client_application.user = User.new
+    @client_application.user = current_user
+    
+    if @client_application.save      
+      flash[:notice] = "Registered the information successfully."
+      redirect_to @client_application   
     else
+      flash[:error] = "Could not create application."
       render :action => "new"
     end
   end

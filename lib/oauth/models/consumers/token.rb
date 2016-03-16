@@ -41,9 +41,9 @@ module Oauth
           def find_or_create_from_access_token(user,access_token)
             secret = access_token.respond_to?(:secret) ? access_token.secret : nil
             if user
-              token = self.find_or_initialize_by_user_id_and_token(user.id, access_token.token)
+              token = self.where(user_id: user.id).where(token: access_token.token).first || self.new(user_id: user.id, token: access_token.token)
             else
-              token = self.find_or_initialize_by_token(access_token.token)
+              token = self.where(token: access_token.token).first || self.new(token: access_token.token)
             end
 
             # set or update the secret
@@ -55,7 +55,7 @@ module Oauth
 
           def build_user_from_token
           end
-          
+
           def credentials
             @credentials||=OAUTH_CREDENTIALS[service_name]
           end
